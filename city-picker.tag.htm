@@ -1,0 +1,65 @@
+<htm>
+	<input id='search' on-input='search' placeholder="search cities..." />
+	<table id='results'></table>
+</htm>
+
+<script>
+	import cities from './cities.min.js';
+
+	class {
+		$onReady() {
+			console.log('ci', cities);
+			this.results = this.$view.Q('#results', 1);
+		}
+		search(node) {
+			console.log('search', node.value)
+			let query = node.value;
+			// console.log('len',query.length)
+			if (query.length < 4) return;
+			this.results.innerHTML = '';
+			console.log('query now', query, cities)
+			for (let country in cities) {
+				for (let state in cities[country]) {
+					for (let city in cities[country][state]) {
+						if (city.toLowerCase().includes(query)) {
+							console.log(country, state, city);
+							this.results.insertAdjacentHTML('beforeend', `<tr><td class='country'>${country}</td><td class='state'>${state}</td><td>${city}</td></tr>`)
+						}
+
+					}
+				}
+			}
+		}
+	}
+</script>
+
+<style>
+	@import url('https://max.pub/css/publicSans.css');
+
+	:host {
+		display: inline-block;
+		outline: none;
+	}
+
+	input {
+		width: 100%;
+		background: #333;
+		font-size: 22px;
+		color: white;
+		border: 1px solid #555;
+		font-family: publicSans;
+		font-weight: 100;
+	}
+
+	.country {
+		color: gray;
+	}
+
+	td {
+		font-weight: 100;
+	}
+
+	.state {
+		color: silver;
+	}
+</style>
